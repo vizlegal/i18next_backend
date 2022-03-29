@@ -3,7 +3,7 @@ defmodule I18nextBackend do
   Documentation for `I18nextBackend`.
   """
 
-  @spec translations(any) :: any
+  @spec translations(binary, binary | list) :: any
   @doc """
     Return a PO file or a list of PO files as a map.
 
@@ -18,16 +18,19 @@ defmodule I18nextBackend do
     iex> get_translations(["cases"])
     %{"cases" => %{"error.delete" => "Error removing document", "error.disabled" => "Error disabling document", "error.enabled" => "Error enabling document", "error.get_followings" => "Error retrieving documents"}}
   """
-  def translations(domains) when is_list(domains) do
+  def translations(lng, domains) when is_list(domains) do
     domains
     |> Enum.reduce(%{}, fn domain, translations ->
-      translations |> Map.merge(%{"#{domain}" => domain |> translations()})
+      translations
+      |> Map.merge(%{"#{domain}" => lng |> translations(domain)})
     end)
   end
 
-  def translations(domain) when is_binary(domain) do
+  def translations(lng, domain) when is_binary(domain) do
     # TODO configure po folder by settings
-    case Gettext.PO.parse_file("priv/gettext/en/LC_MESSAGES/#{domain}.po") do
+    case Gettext.PO.parse_file(
+           "priv/gettext/#{lng}/LC_MESSAGES/#{domain |> String.replace(".json", "")}.po"
+         ) do
       {:ok, %Gettext.PO{} = entries} ->
         entries.translations
         |> Enum.reduce(%{}, fn
