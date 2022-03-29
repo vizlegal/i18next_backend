@@ -6,6 +6,10 @@ defmodule I18nextBackend.Application do
   use Application
 
   @impl true
+  def start do
+    start(true, true)
+  end
+
   def start(_type, _args) do
     children = [
       # Starts a worker by calling: I18nextBackend.Worker.start_link(arg)
@@ -19,7 +23,11 @@ defmodule I18nextBackend.Application do
     Supervisor.start_link(children, opts)
   end
 
-  def translations(domain) do
-    GenServer.call(I18nextBackend.Backend, :translations, domain)
+  def stop() do
+    Supervisor.stop(I18nextBackend.Supervisor, :normal)
+  end
+
+  def translations(lng, domain) do
+    GenServer.call(I18nextBackend.Backend, :translations, %{"lng" => lng, "domain" => domain})
   end
 end

@@ -1,6 +1,6 @@
-# I18nextBackend
+# I18next Phoenix Backend
 
-> An i18next backend
+> An i18next backend, create an endpoint to access to your app `PO` in json format, to be used with [i18next http backend](https://github.com/i18next/i18next-http-backend)
 
 ## Installation
 
@@ -26,12 +26,27 @@ end
 ```
 ## Getting Started
 
-Configuration for I18nextBackend must be present the Application environment. This
-can be done by updating the `:i18next_backend` values in your `config/config.exs`:
+You need to create a simple plug in order to use I18next_backend inside app namespace
 
 ```elixir
-config :i18next_backend,
-  folder: "priv/gettext"
+defmodule Plugs.I18next do
+  @behaviour Plug
+
+  @spec init(any) :: any
+  def init(options), do: I18nextBackend.Plug.init(options)
+
+  @spec call(Plug.Conn.t(), any) :: Plug.Conn.t()
+  def call(conn, opts),
+    do:
+      conn |> I18nextBackend.Plug.call(opts)
+end
+```
+
+Then you can use the plug in a forwarded route
+```elixir
+  scope "/", App do
+    forward("/locales", Plugs.I18next)
+  end
 ```
 
 
