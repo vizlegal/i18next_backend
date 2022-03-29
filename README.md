@@ -49,13 +49,23 @@ Then you can use the plug in a forwarded route
   end
 ```
 
+Client example configuration settings:
 
-## Integrating with Phoenix
+```js
+{
+  crossDomain: false,
+  overrideMimeType: false,
+  ...
+  loadPath: "/locales/{{lng}}/{{ns}}.json",
+  ...
+  requestOptions: {
+    mode: "cors",
+    credentials: "same-origin",
+    cache: "default"
+  }
+}
+```
 
-To integrate with [Phoenix](https://hexdocs.pm/phoenix/Phoenix.html)
-or any other web framework, you can take advantage of `ExHealth.Plug`
-which handles serving a JSON response for you.
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/i18next_backend](https://hexdocs.pm/i18next_backend).
+  **ns** is the `po` file name, used as namespace in i18next
 
+  **lng** is the language
