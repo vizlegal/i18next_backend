@@ -26,7 +26,7 @@ defmodule I18nextBackend.Plug do
     |> send_resp(
       200,
       lng
-      |> I18nextBackend.Application.translations(domain)
+      |> I18nextBackend.translations(domain)
       |> Jason.encode!()
     )
     |> halt()

@@ -15,7 +15,7 @@ defmodule I18nextBackend.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {I18nextBackend.Application, []}
+      mod: {I18nextBackend, []}
     ]
   end
 
