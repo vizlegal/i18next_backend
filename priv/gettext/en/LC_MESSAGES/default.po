@@ -1,0 +1,12 @@
+msgid "test"
+msgstr "this is a test string"
+
+msgid "test.plural"
+msgid_plural "test.plural_plural"
+
+msgstr[0] "this is an empty plural string"
+msgstr[1] "this is only one"
+msgstr[2] "this is some ones"
+
+msgid "test.interpolation"
+msgstr "this is a test %{interpolation}"

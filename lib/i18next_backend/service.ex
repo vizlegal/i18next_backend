@@ -8,14 +8,11 @@ defmodule I18nextBackend.Service do
 
     ## Examples
 
-    iex> get_translations(["cases", "calendar_events"])
-    %{\
-      "cases" => %{"error.delete" => "Error removing document", "error.disabled" => "Error disabling document", "error.enabled" => "Error enabling document", "error.get_followings" => "Error retrieving documents"},\
-      "calendar_events" => %{"circuit-court" => "Circuit Court", "court-of-appeal" => "Court of Appeal", "high-court" => "High Court", "supreme-court" => "Supreme Court"}\
-    }
+    iex> translations("en", ["default"])
+    %{"default" => %{"test" => "this is a test string", "test.interpolation" => "this is a test {{ interpolation }}","test.plural" => "this is an empty plural string","test.plural_plural" => "this is some ones"}}
 
-    iex> get_translations(["cases"])
-    %{"cases" => %{"error.delete" => "Error removing document", "error.disabled" => "Error disabling document", "error.enabled" => "Error enabling document", "error.get_followings" => "Error retrieving documents"}}
+    iex> translations("en", "default")
+    %{"test" => "this is a test string", "test.interpolation" => "this is a test {{ interpolation }}","test.plural" => "this is an empty plural string","test.plural_plural" => "this is some ones"}
   """
   def translations(lng, domains) when is_list(domains) do
     domains

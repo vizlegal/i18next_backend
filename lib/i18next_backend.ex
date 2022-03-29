@@ -20,6 +20,14 @@ defmodule I18nextBackend do
     Supervisor.start_link(children, opts)
   end
 
+  @doc """
+  Stops the Application.
+  """
+  @spec stop() :: :ok
+  def stop() do
+    Supervisor.stop(I18nextBackend.Supervisor, :normal)
+  end
+
   @spec translations(any, any) :: any
   def translations(lng, domain) do
     I18nextBackend.Backend
