@@ -12,9 +12,15 @@ defmodule I18nextBackend.Plug do
   @behaviour Plug
 
   @spec init(any) :: any
+  @doc """
+  Init Plug
+  """
   def init(opts), do: opts
 
   @spec call(Plug.Conn.t(), any) :: Plug.Conn.t()
+  @doc """
+  Return Json response
+  """
   def call(%Plug.Conn{path_info: path_info} = conn, _opts) do
     case path_info do
       [lng, domain] ->

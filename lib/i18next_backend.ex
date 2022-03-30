@@ -7,6 +7,9 @@ defmodule I18nextBackend do
 
   @impl true
   @spec start(any, any) :: {:error, any} | {:ok, pid}
+  @doc """
+  Starts the I18nextBacked Application
+  """
   def start(_type, _args) do
     children = [
       # Starts a worker by calling: I18nextBackend.Worker.start_link(arg)
@@ -21,7 +24,7 @@ defmodule I18nextBackend do
   end
 
   @doc """
-  Stops the Application.
+  Stops the I18nextBacked Application.
   """
   @spec stop() :: :ok
   def stop() do
@@ -29,6 +32,9 @@ defmodule I18nextBackend do
   end
 
   @spec translations(any, any) :: any
+  @doc """
+  Use Backend to get `po` files as `json`
+  """
   def translations(lng, domain) do
     I18nextBackend.Backend
     |> GenServer.call({:translations, %{lng: lng, domain: domain}})

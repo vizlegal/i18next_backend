@@ -1,18 +1,50 @@
 defmodule I18nextBackend.Service do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
-  @moduledoc false
+  @moduledoc """
+    Service for get `PO` files and transform into json
+
+    ## Examples
+      I18NextBackend.Service.translations("es", ["default"])
+
+  """
   @spec translations(binary, binary | list) :: any
   @doc """
     Return a PO file or a list of PO files as a map.
 
-    ## Examples
+    ##Examples
 
-    iex> translations("en", ["default"])
-    %{"default" => %{"test" => "this is a test string", "test.interpolation" => "this is a test {{ interpolation }}","test.plural" => "this is an empty plural string","test.plural_plural" => "this is some ones"}}
+      priv/gettext/en/LC_MESSAGES/default.po
+      ---
+      msgid "test"
+      msgstr "this is a test string"
 
-    iex> translations("en", "default")
-    %{"test" => "this is a test string", "test.interpolation" => "this is a test {{ interpolation }}","test.plural" => "this is an empty plural string","test.plural_plural" => "this is some ones"}
+      msgid "test.plural"
+      msgid_plural "test.plural_plural"
+
+      msgstr[0] "this is an empty plural string"
+      msgstr[1] "this is only one"
+      msgstr[2] "this is some ones"
+
+      msgid "test.interpolation"
+      msgstr "this is a test %{interpolation}"
+      ---
+
+      iex> translations("en", ["default"])
+      %{
+        "default" => %{
+          "test" => "this is a test string",
+          "test.interpolation" => "this is a test {{ interpolation }}",
+          "test.plural" => "this is an empty plural string",
+          "test.plural_plural" => "this is some ones"
+        }
+      }
+
+      iex> translations("en", "default")
+      %{
+        "test" => "this is a test string",
+        "test.interpolation" => "this is a test {{ interpolation }}",
+        "test.plural" => "this is an empty plural string",
+        "test.plural_plural" => "this is some ones"
+      }
   """
   def translations(lng, domains) when is_list(domains) do
     domains
