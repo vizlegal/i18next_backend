@@ -11,6 +11,7 @@ defmodule I18nextBackend.MixProject do
       start_permanent: Mix.env() == :prod,
       test_coverage: [tool: ExCoveralls],
       deps: deps(),
+      source_url: "https://github.com/vizlegal/i18next_backend",
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,

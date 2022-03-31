@@ -21,6 +21,7 @@ defmodule I18nextBackend.Backend do
     {:ok, nil}
   end
 
+  @impl true
   @doc """
   Use Service to get translations
   """
