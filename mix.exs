@@ -29,12 +29,13 @@ defmodule I18nextBackend.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:mix_audit, "~> 1.0", only: [:dev, :test], runtime: false},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.12", only: [:test], runtime: false},
       {:ex_doc, "~> 0.24", only: [:dev], runtime: false},
       {:gettext, "~> 0.18"},
-      # {:jason, "~> 1.2"},
+      {:jason, "~> 1.2"},
       {:plug, "~> 1.11"}
     ]
   end

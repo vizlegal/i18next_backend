@@ -11,7 +11,7 @@ defmodule I18nextBackend.Plug do
   import Plug.Conn
   @behaviour Plug
 
-  @spec init(any) :: any
+  @spec init(any) :: atom | binary | [any] | number | tuple | map
   @doc """
   Init Plug
   """

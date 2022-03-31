@@ -26,7 +26,13 @@ end
 ```
 ## Getting Started
 
-You need to create a simple plug in order to use I18next_backend inside app namespace
+You can use as a plug in a forwarded route
+```elixir
+  scope "/", App do
+    forward("/locales", I18nextBackend.Plug)
+  end
+```
+In case you need to use Plug inside app namespace, you need to create a simple plug
 
 ```elixir
 defmodule Plugs.I18next do
@@ -41,15 +47,15 @@ defmodule Plugs.I18next do
       conn |> I18nextBackend.Plug.call(opts)
 end
 ```
+and use it in routes instead default
 
-Then you can use the plug in a forwarded route
 ```elixir
   scope "/", App do
     forward("/locales", Plugs.I18next)
   end
 ```
 
-Client example configuration settings:
+Client configuration settings example:
 
 ```js
 {
