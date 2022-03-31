@@ -5,6 +5,8 @@ defmodule I18nextBackend.MixProject do
     [
       app: :i18next_backend,
       version: "0.1.0",
+      name: "I18nextBackend",
+      description: "A simple 18next backend",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       test_coverage: [tool: ExCoveralls],
