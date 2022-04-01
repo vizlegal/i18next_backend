@@ -7,6 +7,13 @@ defmodule I18nextBackend do
   use GenServer
 
   @ets_table :locales
+  def child_spec(opts) do
+    %{
+      id: opts[:name] || __MODULE__,
+      start: {__MODULE__, :start_link, [opts]}
+    }
+  end
+
   @spec start_link(any) :: :ignore | {:error, any} | {:ok, pid}
   @doc """
   Start Genserver
