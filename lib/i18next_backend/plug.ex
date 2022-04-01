@@ -28,8 +28,10 @@ defmodule I18nextBackend.Plug do
         |> put_resp_content_type("application/json", "UTF-8")
         |> send_resp(
           200,
-          lng
-          |> I18nextBackend.translations(domain)
+          I18nextBackend
+          |> GenServer.call(
+            {:translations, %{lng: lng, domain: domain |> String.replace(".json", "")}}
+          )
           |> Jason.encode!()
         )
         |> halt()
