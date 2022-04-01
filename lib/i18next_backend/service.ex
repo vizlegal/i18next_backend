@@ -54,11 +54,9 @@ defmodule I18nextBackend.Service do
     end)
   end
 
-  def translations(lng, domain) when is_binary(domain) do
+  def translations(_lng, domain) when is_binary(domain) do
     # TODO configure po folder by settings
-    case Gettext.PO.parse_file(
-           "priv/gettext/#{lng}/LC_MESSAGES/#{domain |> String.replace(".json", "")}.po"
-         ) do
+    case Gettext.PO.parse_file(domain) do
       {:ok, %Gettext.PO{} = entries} ->
         entries.translations
         |> Enum.reduce(%{}, &merge_translation/2)
@@ -86,7 +84,8 @@ defmodule I18nextBackend.Service do
       "#{entry.msgid |> List.first()}" => entry.msgstr |> Map.get(0) |> List.first()
     })
     |> Map.merge(%{
-      "#{entry.msgid_plural |> List.first()}" => entry.msgstr |> Map.get(2) |> List.first()
+      "#{entry.msgid_plural |> List.first()}" =>
+        entry.msgstr |> Map.get((entry.msgstr |> Map.keys() |> length()) - 1) |> List.first()
     })
   end
 end

@@ -4,6 +4,7 @@ defmodule I18nextBackend.Backend do
   """
   use GenServer
 
+  @ets_table :locales
   @spec start_link(any) :: :ignore | {:error, any} | {:ok, pid}
   @doc """
   Start Genserver
@@ -12,12 +13,24 @@ defmodule I18nextBackend.Backend do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
+  @external_resource "priv/gettext/en/LC_MESSAGES"
   @impl true
   @spec init(any) :: {:ok, nil}
   @doc """
   Init Backend
   """
   def init(_) do
+    :ets.new(@ets_table, [:set, :public, :named_table])
+
+    @external_resource
+    |> File.ls!()
+    |> Enum.each(fn f ->
+      put(
+        f |> String.replace(".po", ""),
+        I18nextBackend.Service.translations("en", "#{@external_resource}/#{f}")
+      )
+    end)
+
     {:ok, nil}
   end
 
@@ -25,7 +38,19 @@ defmodule I18nextBackend.Backend do
   @doc """
   Use Service to get translations
   """
+
   def handle_call({:translations, %{domain: domain, lng: lng}}, _from, state) do
-    {:reply, I18nextBackend.Service.translations(lng, domain), state}
+    {:reply, get(lng, domain), state}
+  end
+
+  def get(_lng, key) do
+    case :ets.lookup(@ets_table, key) do
+      [{^key, value} | _rest] -> value
+      [] -> :not_found
+    end
+  end
+
+  def put(key, value) do
+    :ets.insert(@ets_table, {key, value})
   end
 end

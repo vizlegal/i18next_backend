@@ -37,6 +37,6 @@ defmodule I18nextBackend do
   """
   def translations(lng, domain) do
     I18nextBackend.Backend
-    |> GenServer.call({:translations, %{lng: lng, domain: domain}})
+    |> GenServer.call({:translations, %{lng: lng, domain: domain |> String.replace(".json", "")}})
   end
 end
