@@ -2,8 +2,6 @@ defmodule I18nextBackend do
   @moduledoc """
   `I18nextBackend` is a simple Plug to serve PO files in json format
 
-  """
-  @moduledoc """
     all locales files are parsed in a Genserver
   """
   use GenServer
