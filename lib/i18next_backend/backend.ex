@@ -13,8 +13,6 @@ defmodule I18nextBackend.Backend do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
-  @external_resource "gettext/en/LC_MESSAGES"
-
   def path, do: Application.get_env(:i18next_backend, :path)
 
   @impl true
@@ -25,14 +23,14 @@ defmodule I18nextBackend.Backend do
   def init(_) do
     :ets.new(@ets_table, [:set, :public, :named_table])
 
-    "#{path() |> Path.join(@external_resource)}"
+    "#{path()}"
     |> File.ls!()
     |> Enum.each(fn f ->
       put(
         f |> String.replace(".po", ""),
         I18nextBackend.Service.translations(
           "en",
-          "#{path() |> Path.join(@external_resource) |> Path.join(f)}"
+          "#{path() |> Path.join(f)}"
         )
       )
     end)
