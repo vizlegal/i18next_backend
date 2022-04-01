@@ -31,7 +31,7 @@ defmodule I18nextBackend.PlugTest do
              resp_body: body
            } = result
 
-    assert %{} = Jason.decode!(body)
+    assert "not_found" = Jason.decode!(body)
   end
 
   test "call/2 returns uncorrect path" do

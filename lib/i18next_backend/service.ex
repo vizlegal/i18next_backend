@@ -28,9 +28,9 @@ defmodule I18nextBackend.Service do
       msgstr "this is a test %{interpolation}"
       ---
 
-      iex> translations("en", ["default"])
+      iex> translations("en", ["priv/gettext/en/LC_MESSAGES/default.po"])
       %{
-        "default" => %{
+        "priv/gettext/en/LC_MESSAGES/default.po" => %{
           "test" => "this is a test string",
           "test.interpolation" => "this is a test {{ interpolation }}",
           "test.plural" => "this is an empty plural string",
@@ -38,7 +38,7 @@ defmodule I18nextBackend.Service do
         }
       }
 
-      iex> translations("en", "default")
+      iex> translations("en", "priv/gettext/en/LC_MESSAGES/default.po")
       %{
         "test" => "this is a test string",
         "test.interpolation" => "this is a test {{ interpolation }}",
