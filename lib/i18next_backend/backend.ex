@@ -13,7 +13,7 @@ defmodule I18nextBackend.Backend do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
-  def path, do: Application.get_env(:i18next_backend, :path)
+  def path, do: Application.get_env(:i18next_backend, :path) || "priv/gettext/en/LC_MESSAGES"
 
   @impl true
   @spec init(any) :: {:ok, nil}
