@@ -2,7 +2,7 @@ defmodule I18nextBackend.PlugTest do
   use ExUnit.Case, async: true
 
   test "call/2 returns the correct JSON payload" do
-    I18nextBackend.start_link([])
+    # I18nextBackend.start_link([])
     endpoint = "/en/default.json"
 
     result =
@@ -22,7 +22,7 @@ defmodule I18nextBackend.PlugTest do
   end
 
   test "call/2 returns empty unexistent file" do
-    I18nextBackend.start_link([])
+    # I18nextBackend.start_link([])
     endpoint = "/en/other.json"
 
     result =

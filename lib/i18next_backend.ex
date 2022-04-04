@@ -4,70 +4,40 @@ defmodule I18nextBackend do
 
     all locales files are parsed in a Genserver
   """
-  use GenServer
-
-  @ets_table :locales
-  def child_spec(opts) do
-    %{
-      id: opts[:name] || __MODULE__,
-      start: {__MODULE__, :start_link, [opts]},
-      type: :worker,
-      restart: :permanent,
-      shutdown: 500
-    }
-  end
-
-  @spec start_link(any) :: :ignore | {:error, any} | {:ok, pid}
-  @doc """
-  Start Genserver
-  """
-  def start_link(_name) do
-    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
-  end
-
-  @spec path :: any
-  def path, do: Application.get_env(:i18next_backend, :path) || "priv/gettext/en/LC_MESSAGES"
+  use Application
 
   @impl true
-  @spec init(any) :: {:ok, nil}
+  @spec start(any, any) :: {:error, any} | {:ok, pid}
   @doc """
-  Init Backend
+  Starts the I18nextBacked Application
   """
-  def init(_) do
-    :ets.new(@ets_table, [:set, :public, :named_table])
+  def start(_type, _args) do
+    children = [
+      # Starts a worker by calling: I18nextBackend.Worker.start_link(arg)
+      # {I18nextBackend.Worker, arg}
+      I18nextBackend.Backend
+    ]
 
-    "#{path()}"
-    |> File.ls!()
-    |> Enum.each(fn f ->
-      put(
-        f |> String.replace(".po", ""),
-        I18nextBackend.Service.translations(
-          "en",
-          "#{path() |> Path.join(f)}"
-        )
-      )
-    end)
-
-    {:ok, nil}
+    # See https://hexdocs.pm/elixir/Supervisor.html
+    # for other strategies and supported options
+    opts = [strategy: :one_for_one, name: I18nextBackend.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 
-  @impl true
   @doc """
-  Use Service to get translations
+  Stops the I18nextBacked Application.
   """
-
-  def handle_call({:translations, %{domain: domain, lng: lng}}, _from, state) do
-    {:reply, get(lng, domain), state}
+  @spec stop() :: :ok
+  def stop() do
+    Supervisor.stop(I18nextBackend.Supervisor, :normal)
   end
 
-  def get(_lng, key) do
-    case :ets.lookup(@ets_table, key) do
-      [{^key, value} | _rest] -> value
-      [] -> :not_found
-    end
-  end
-
-  def put(key, value) do
-    :ets.insert(@ets_table, {key, value})
+  @spec translations(any, any) :: any
+  @doc """
+  Use Backend to get `po` files as `json`
+  """
+  def translations(lng, domain) do
+    I18nextBackend.Backend
+    |> GenServer.call({:translations, %{lng: lng, domain: domain |> String.replace(".json", "")}})
   end
 end

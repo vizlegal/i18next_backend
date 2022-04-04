@@ -14,7 +14,7 @@ by adding `i18next_backend` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:i18next_backend, git: "https://url/i18next_backend"}
+    {:i18next_backend, git: "https://github.com/vizlegal/i18next_backend"}
   ]
 end
 ```
